@@ -1,13 +1,16 @@
 ---
 name: linear-cowork
-description: "Use when converting an implementation plan into Linear issues and a project. Creates a Linear project with issues for each plan task instead of writing code."
+description: "Use when pulling work from Linear, converting plans into Linear issues, or managing the Linear workflow. The central hub for all Linear interaction — triage, prioritization, issue creation, and work selection."
 ---
 
 # Linear Cowork
 
-Convert implementation plans into Linear projects and issues using subagents. This is the Linear-native alternative to subagent-driven-development — instead of executing code, it creates trackable issues.
+The central hub for all Linear interaction. This skill handles two main workflows:
 
-**Announce at start:** "I'm using the linear-cowork skill to create Linear issues from this plan."
+1. **Pulling work** — Triage, prioritize, and select the next issue to implement
+2. **Creating issues** — Convert implementation plans into Linear projects and issues
+
+Linear is the source of truth. All work flows through Linear.
 
 ## MCP Setup
 
@@ -17,18 +20,144 @@ Before using this skill, ensure the Linear MCP server is installed and authentic
 
 ```dot
 digraph when_to_use {
-    "Have implementation plan?" [shape=diamond];
-    "Want Linear issues (not code)?" [shape=diamond];
-    "linear-cowork" [shape=box style=filled fillcolor=lightgreen];
-    "subagent-driven-development" [shape=box];
-    "Manual execution or brainstorm first" [shape=box];
+    "What do you need?" [shape=diamond];
+    "Pulling work (triage + next issue)" [shape=box style=filled fillcolor=lightgreen];
+    "Creating issues from a plan" [shape=box style=filled fillcolor=lightgreen];
+    "User says 'what should I work on?'" [shape=box];
+    "User says 'let's work' or 'next issue'" [shape=box];
+    "writing-plans handoff" [shape=box];
 
-    "Have implementation plan?" -> "Want Linear issues (not code)?" [label="yes"];
-    "Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
-    "Want Linear issues (not code)?" -> "linear-cowork" [label="yes"];
-    "Want Linear issues (not code)?" -> "subagent-driven-development" [label="no — want code"];
+    "What do you need?" -> "Pulling work (triage + next issue)" [label="find work"];
+    "What do you need?" -> "Creating issues from a plan" [label="have a plan"];
+    "User says 'what should I work on?'" -> "Pulling work (triage + next issue)";
+    "User says 'let's work' or 'next issue'" -> "Pulling work (triage + next issue)";
+    "writing-plans handoff" -> "Creating issues from a plan";
 }
 ```
+
+---
+
+# Part 1: Pulling Work from Linear
+
+**Announce at start:** "I'm using the linear-cowork skill to find the next issue to work on."
+
+## Work-Pulling Decision Flow
+
+```dot
+digraph pull_work {
+    rankdir=TB;
+
+    "Haiku: Read team triage queue" [shape=box];
+    "Triage empty?" [shape=diamond];
+    "Process triage (see below)" [shape=box];
+    "Haiku: List active projects" [shape=box];
+    "Haiku: List Todo issues sorted by priority" [shape=box];
+    "Present project context + top issues to user" [shape=box];
+    "User selects issue" [shape=box];
+    "Issue too large?" [shape=diamond];
+    "Invoke brainstorming to decompose\nthen create sub-issues via Part 2" [shape=box];
+    "Hand off to execution" [shape=box style=filled fillcolor=lightgreen];
+
+    "Haiku: Read team triage queue" -> "Triage empty?";
+    "Triage empty?" -> "Haiku: List active projects" [label="yes"];
+    "Triage empty?" -> "Process triage (see below)" [label="no"];
+    "Process triage (see below)" -> "Haiku: List active projects";
+    "Haiku: List active projects" -> "Haiku: List Todo issues sorted by priority";
+    "Haiku: List Todo issues sorted by priority" -> "Present project context + top issues to user";
+    "Present project context + top issues to user" -> "User selects issue";
+    "User selects issue" -> "Issue too large?";
+    "Issue too large?" -> "Invoke brainstorming to decompose\nthen create sub-issues via Part 2" [label="yes"];
+    "Issue too large?" -> "Hand off to execution" [label="no — right-sized"];
+}
+```
+
+### Step 1: Process Triage First
+
+Before any work begins, the triage queue must be empty or fully actioned.
+
+Dispatch a Haiku subagent to read the team's triage queue (issues without a status or in triage state). For each triaged item, present it to the user with a recommendation:
+
+```markdown
+## Triage Queue (N items)
+
+### 1. [Bug] Login fails on Safari
+**Reported by:** Jane | **Created:** 2 days ago
+**Recommendation:** Accept → priority High, assign to me
+
+### 2. [Feature] Add dark mode
+**Reported by:** Bob | **Created:** 1 week ago
+**Recommendation:** Accept → priority Low, add to Backlog
+```
+
+For each item, the user decides:
+- **Accept** → Set priority, label, status (Todo or Backlog), assignee
+- **Reject** → Mark as Canceled or Duplicate with a comment explaining why
+- **Defer** → Move to Backlog with a note
+
+Use Haiku subagents to apply each triage decision. **Do not start selecting work until triage is empty or every item has been actioned.**
+
+### Step 2: Review Active Projects
+
+Dispatch a Haiku subagent to list all active Linear projects. Present a brief summary:
+
+```markdown
+## Active Projects
+
+| Project | Open Issues | Priority Range | Status |
+|---------|-------------|---------------|--------|
+| OAuth Integration | 5 of 8 remaining | High-Medium | In Progress |
+| CI/CD Pipeline | 2 of 3 remaining | Medium | Planned |
+| Homepage Redesign | 12 of 12 remaining | Medium-Low | Planned |
+```
+
+This gives context for prioritization — issues belonging to in-progress projects may deserve higher effective priority.
+
+### Step 3: Select Next Issue by Priority
+
+Dispatch a Haiku subagent to list all **Todo** issues sorted by priority (Urgent → High → Medium → Low). Factor in project context:
+
+- Issues in **active/in-progress projects** get a priority boost when deciding what to work on next
+- Within the same priority level, prefer issues that unblock other work
+- Present the top 3-5 candidates to the user with context
+
+```markdown
+## Next Up (by priority)
+
+| # | Issue ID | Title | Priority | Project | Why |
+|---|----------|-------|----------|---------|-----|
+| 1 | ONE-15 | [Bug] Login fails on Safari | High | OAuth Integration | Blocks launch |
+| 2 | ONE-42 | [Feature] Add OAuth callback | High | OAuth Integration | Next in sequence |
+| 3 | ONE-50 | [Chore] Upgrade React to v19 | Medium | — | No blockers |
+
+**Recommendation:** ONE-15 — highest priority and blocks the OAuth project.
+```
+
+The user picks which issue to work on.
+
+### Step 4: Size Check — Decompose Large Issues
+
+Before starting implementation, assess whether the selected issue is right-sized:
+
+**Right-sized issue:** Can be implemented in a single branch/PR with clear acceptance criteria. Proceed to execution.
+
+**Too large:** The issue describes work that spans multiple independent changes, would result in a PR that's hard to review, or has acceptance criteria that cover multiple distinct behaviors.
+
+If too large:
+1. Invoke **superpowers:brainstorming** to design the decomposition
+2. Use the **Creating Issues** workflow (Part 2) to break it into sub-issues in Linear
+3. Update the parent issue's description to reference the sub-issues
+4. Present the sub-issues to the user for selection
+
+### Step 5: Hand Off to Execution
+
+Once an appropriately-sized issue is selected:
+
+- **If subagents available:** Invoke **superpowers:subagent-driven-development** with the issue ID
+- **If no subagents:** Invoke **superpowers:executing-plans** with the issue ID
+
+---
+
+# Part 2: Creating Issues from Plans
 
 ## The Process
 

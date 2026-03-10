@@ -57,6 +57,10 @@ Update the issue status to **Done** via Linear MCP.
 - Follow that skill to verify tests, create PR
 - PR title: `[ONE-42] Issue title`
 
+### After Completion
+
+Let the user know: *"Issue ONE-42 is done. Use superpowers:linear-cowork to pull the next issue when you're ready."*
+
 ## Branch and PR Conventions
 
 **One issue = one branch = one PR.** Never combine multiple issues into a single branch.

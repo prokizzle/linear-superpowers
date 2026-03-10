@@ -122,6 +122,10 @@ Use superpowers:finishing-a-development-branch to create the PR.
 
 Include the issue ID in the PR title: `[ONE-42] Add OAuth login flow`
 
+### After Completion
+
+Let the user know: *"Issue ONE-42 is done. Use superpowers:linear-cowork to pull the next issue when you're ready."*
+
 ## Model Selection
 
 Use the least powerful model that can handle each role:
