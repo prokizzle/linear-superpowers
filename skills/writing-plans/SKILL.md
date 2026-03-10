@@ -49,7 +49,7 @@ This structure informs the task decomposition. Each task should produce self-con
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED: Use superpowers:linear-cowork to create Linear issues from this plan. Code execution happens from individual Linear issues, not directly from this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -133,18 +133,14 @@ After completing each chunk of the plan:
 
 After saving the plan:
 
-**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Ready to execute?"**
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Creating Linear issues now."**
 
-**Ask the user which execution path to take:**
+**REQUIRED:** Use superpowers:linear-cowork to convert plan tasks into Linear issues.
 
-1. **Create Linear issues** (superpowers:linear-cowork)
-   - Converts plan tasks into a Linear project with tracked issues
-   - No code written — issues go to the team's backlog
-   - Use when: planning for a team, deferring execution, or tracking work in Linear
+Linear is the source of truth. Plans ALWAYS flow through Linear before code is written:
 
-2. **Execute as code** (subagent-driven or sequential)
-   - **If harness has subagents (Claude Code, etc.):** Use superpowers:subagent-driven-development
-     - Fresh subagent per task + two-stage review
-   - **If harness does NOT have subagents:** Use superpowers:executing-plans
-     - Batch execution with checkpoints for review
-   - Use when: implementing the plan immediately in this session
+```
+writing-plans → linear-cowork → Linear issues → (later) code execution from issues
+```
+
+Do NOT offer to execute code directly from the plan. Do NOT invoke subagent-driven-development or executing-plans from here. Code execution happens later, driven by individual Linear issues — one issue per branch/PR.
