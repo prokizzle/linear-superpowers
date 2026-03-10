@@ -103,12 +103,22 @@ git commit -m "feat: add specific feature"
 ```
 ````
 
+## Capturing Out-of-Scope Work
+
+While writing the plan, you will often discover work that falls outside the current scope — pre-existing bugs, tech debt, missing tests, improvements to adjacent systems, or future feature ideas.
+
+- Do NOT ignore or defer these silently. Create Linear backlog issues for each item using a Haiku subagent via the Linear MCP.
+- Use issue type `[Chore]`, `[Bug]`, or `[Feature]` as appropriate. Set status to **Backlog** (not Todo — these are unplanned). Set priority to **Low (4)** unless the discovery suggests otherwise.
+- Briefly mention to the user what you captured: *"I noticed X while planning — I've added a backlog issue for it."*
+- This ensures nothing discovered during planning is lost, even when it's not part of the current work.
+
 ## Remember
 - Exact file paths always
 - Complete code in plan (not "add validation")
 - Exact commands with expected output
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
+- Out-of-scope discoveries go to Linear backlog, never silently dropped
 
 ## Plan Review Loop
 
