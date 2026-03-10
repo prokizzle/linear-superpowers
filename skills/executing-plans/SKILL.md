@@ -59,7 +59,7 @@ Update the issue status to **Done** via Linear MCP.
 
 ### After Completion
 
-Let the user know: *"Issue ONE-42 is done. Use superpowers:linear-cowork to pull the next issue when you're ready."*
+Let the user know: *"Issue ONE-42 is done. Use superpowers:linear-sprint to continue working through issues, or superpowers:linear-cowork to pull a single issue."*
 
 ## Branch and PR Conventions
 
@@ -92,4 +92,5 @@ Let the user know: *"Issue ONE-42 is done. Use superpowers:linear-cowork to pull
 **Required workflow skills:**
 - **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
 - **superpowers:linear-cowork** - Creates the Linear issues this skill implements
+- **superpowers:linear-sprint** - Orchestrates working through multiple issues in sequence
 - **superpowers:finishing-a-development-branch** - Complete development after implementation
