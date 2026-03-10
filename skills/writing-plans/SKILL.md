@@ -49,7 +49,7 @@ This structure informs the task decomposition. Each task should produce self-con
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED: Use superpowers:linear-cowork to create Linear issues from this plan. Code execution happens from individual Linear issues, not directly from this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -103,12 +103,22 @@ git commit -m "feat: add specific feature"
 ```
 ````
 
+## Capturing Out-of-Scope Work
+
+While writing the plan, you will often discover work that falls outside the current scope — pre-existing bugs, tech debt, missing tests, improvements to adjacent systems, or future feature ideas.
+
+- Do NOT ignore or defer these silently. Create Linear backlog issues for each item using a Haiku subagent via the Linear MCP.
+- Use issue type `[Chore]`, `[Bug]`, or `[Feature]` as appropriate. Set status to **Backlog** (not Todo — these are unplanned). Set priority to **Low (4)** unless the discovery suggests otherwise.
+- Briefly mention to the user what you captured: *"I noticed X while planning — I've added a backlog issue for it."*
+- This ensures nothing discovered during planning is lost, even when it's not part of the current work.
+
 ## Remember
 - Exact file paths always
 - Complete code in plan (not "add validation")
 - Exact commands with expected output
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
+- Out-of-scope discoveries go to Linear backlog, never silently dropped
 
 ## Plan Review Loop
 
@@ -133,15 +143,14 @@ After completing each chunk of the plan:
 
 After saving the plan:
 
-**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Ready to execute?"**
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Creating Linear issues now."**
 
-**Execution path depends on harness capabilities:**
+**REQUIRED:** Use superpowers:linear-cowork to convert plan tasks into Linear issues.
 
-**If harness has subagents (Claude Code, etc.):**
-- **REQUIRED:** Use superpowers:subagent-driven-development
-- Do NOT offer a choice - subagent-driven is the standard approach
-- Fresh subagent per task + two-stage review
+Linear is the source of truth. Plans ALWAYS flow through Linear before code is written:
 
-**If harness does NOT have subagents:**
-- Execute plan in current session using superpowers:executing-plans
-- Batch execution with checkpoints for review
+```
+writing-plans → linear-cowork → Linear issues → (later) code execution from issues
+```
+
+Do NOT offer to execute code directly from the plan. Do NOT invoke subagent-driven-development or executing-plans from here. Code execution happens later, driven by individual Linear issues — one issue per branch/PR.

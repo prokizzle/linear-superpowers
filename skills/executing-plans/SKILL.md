@@ -1,70 +1,96 @@
 ---
 name: executing-plans
-description: Use when you have a written implementation plan to execute in a separate session with review checkpoints
+description: Use when implementing a Linear issue without subagent support — one issue per branch/PR, sequential execution
 ---
 
 # Executing Plans
 
 ## Overview
 
-Load plan, review critically, execute all tasks, report when complete.
+Implement a single Linear issue in the current session. This is the non-subagent alternative to subagent-driven-development. **One issue = one branch = one PR.**
 
-**Announce at start:** "I'm using the executing-plans skill to implement this plan."
+**Announce at start:** "I'm using the executing-plans skill to implement this Linear issue."
 
-**Note:** Tell your human partner that Superpowers works much better with access to subagents. The quality of its work will be significantly higher if run on a platform with subagent support (such as Claude Code or Codex). If subagents are available, use superpowers:subagent-driven-development instead of this skill.
+**Note:** Tell your human partner that Superpowers works much better with access to subagents. If subagents are available, use superpowers:subagent-driven-development instead.
 
 ## The Process
 
-### Step 1: Load and Review Plan
-1. Read plan file
-2. Review critically - identify any questions or concerns about the plan
-3. If concerns: Raise them with your human partner before starting
-4. If no concerns: Create TodoWrite and proceed
+### Step 1: Read the Linear Issue
 
-### Step 2: Execute Tasks
+Read the issue from Linear via MCP:
+- Title, description, acceptance criteria
+- Labels, priority, assignee
+- Project context and related issues
 
-For each task:
-1. Mark as in_progress
-2. Follow each step exactly (plan has bite-sized steps)
-3. Run verifications as specified
-4. Mark as completed
+The issue's **Acceptance Criteria** are the spec. Do NOT read from a plan file — the Linear issue is the source of truth.
 
-### Step 3: Complete Development
+If concerns: Raise them with your human partner before starting.
 
-After all tasks complete and verified:
-- Announce: "I'm using the finishing-a-development-branch skill to complete this work."
-- **REQUIRED SUB-SKILL:** Use superpowers:finishing-a-development-branch
-- Follow that skill to verify tests, present options, execute choice
+### Step 2: Update Status to In Progress
+
+Update the issue status to **In Progress** via Linear MCP.
+
+### Step 3: Create Branch
+
+Create a branch named after the issue:
+```
+feat/ONE-42-short-description
+fix/ONE-43-crash-on-empty-cart
+chore/ONE-44-upgrade-react
+```
+
+### Step 4: Execute
+
+Implement the issue:
+1. Follow acceptance criteria as the spec
+2. Use TDD (superpowers:test-driven-development)
+3. Run verifications as you go
+4. Commit with issue ID: `[ONE-42] Add OAuth login flow`
+
+### Step 5: Update Issue to Done
+
+Update the issue status to **Done** via Linear MCP.
+
+### Step 6: Complete Development
+
+- **REQUIRED:** Use superpowers:finishing-a-development-branch
+- Follow that skill to verify tests, create PR
+- PR title: `[ONE-42] Issue title`
+
+### After Completion
+
+Let the user know: *"Issue ONE-42 is done. Use superpowers:linear-cycle to continue working through issues, or superpowers:linear-cowork to pull a single issue."*
+
+## Branch and PR Conventions
+
+**One issue = one branch = one PR.** Never combine multiple issues into a single branch.
+
+- Branch name: `{type}/ISSUE-ID-short-description`
+- Commit messages: `[ISSUE-ID] description`
+- PR title: `[ISSUE-ID] Issue title`
 
 ## When to Stop and Ask for Help
 
-**STOP executing immediately when:**
+**STOP immediately when:**
 - Hit a blocker (missing dependency, test fails, instruction unclear)
-- Plan has critical gaps preventing starting
-- You don't understand an instruction
+- Acceptance criteria have gaps preventing progress
+- You don't understand a criterion
 - Verification fails repeatedly
 
 **Ask for clarification rather than guessing.**
 
-## When to Revisit Earlier Steps
-
-**Return to Review (Step 1) when:**
-- Partner updates the plan based on your feedback
-- Fundamental approach needs rethinking
-
-**Don't force through blockers** - stop and ask.
-
 ## Remember
-- Review plan critically first
-- Follow plan steps exactly
+- Linear issue is the source of truth, not plan files
+- Follow acceptance criteria exactly
 - Don't skip verifications
-- Reference skills when plan says to
 - Stop when blocked, don't guess
-- Never start implementation on main/master branch without explicit user consent
+- Never start on main/master without explicit user consent
+- One issue per branch per PR
 
 ## Integration
 
 **Required workflow skills:**
 - **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **superpowers:writing-plans** - Creates the plan this skill executes
-- **superpowers:finishing-a-development-branch** - Complete development after all tasks
+- **superpowers:linear-cowork** - Creates the Linear issues this skill implements
+- **superpowers:linear-cycle** - Orchestrates working through multiple issues in sequence
+- **superpowers:finishing-a-development-branch** - Complete development after implementation

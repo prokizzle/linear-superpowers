@@ -97,6 +97,14 @@ digraph brainstorming {
 - Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
 - Don't propose unrelated refactoring. Stay focused on what serves the current goal.
 
+**Capturing out-of-scope work:**
+
+- During brainstorming, you will often discover work that is related but out of scope for the current design — pre-existing bugs, tech debt, improvements to adjacent systems, ideas for future features.
+- Do NOT ignore or defer these silently. Create Linear backlog issues for each item using a Haiku subagent via the Linear MCP.
+- Use issue type `[Chore]`, `[Bug]`, or `[Feature]` as appropriate. Set status to **Backlog** (not Todo — these are unplanned). Set priority to **Low (4)** unless the discovery suggests otherwise.
+- Briefly mention to the user what you captured: *"I noticed X is also affected — I've added a backlog issue for it so it doesn't get lost."*
+- This ensures nothing discovered during brainstorming is lost, even if it's not part of the current work.
+
 ## After the Design
 
 **Documentation:**
