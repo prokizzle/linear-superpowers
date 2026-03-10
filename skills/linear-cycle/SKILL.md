@@ -1,18 +1,18 @@
 ---
-name: linear-sprint
+name: linear-cycle
 description: "Use when the user wants to work through multiple Linear issues in sequence. Loops through fully spec'd Todo issues by priority, executing each one and flagging incomplete issues for triage."
 ---
 
-# Linear Sprint
+# Linear Cycle
 
-Work through Linear issues in a continuous loop. Pull the highest-priority fully spec'd issue, execute it, then pull the next one. Issues that are missing details get flagged and skipped — never block the sprint on an incomplete issue.
+Work through Linear issues in a continuous loop. Pull the highest-priority fully spec'd issue, execute it, then pull the next one. Issues that are missing details get flagged and skipped — never block the cycle on an incomplete issue.
 
-**Announce at start:** "I'm using the linear-sprint skill to work through Linear issues."
+**Announce at start:** "I'm using the linear-cycle skill to work through Linear issues."
 
 ## The Loop
 
 ```dot
-digraph sprint {
+digraph cycle {
     rankdir=TB;
 
     "Haiku: Check triage queue" [shape=box];
@@ -52,20 +52,20 @@ digraph sprint {
 
 ### Step 1: Clear Triage First
 
-Dispatch a Haiku subagent to check the team's triage queue. If items exist, invoke **superpowers:linear-triage** to process them before starting the sprint. The sprint does not begin until triage is empty.
+Dispatch a Haiku subagent to check the team's triage queue. If items exist, invoke **superpowers:linear-triage** to process them before starting the cycle. The cycle does not begin until triage is empty.
 
 ### Step 2: Review Active Projects
 
-Dispatch a Haiku subagent to list active Linear projects. This informs priority decisions throughout the sprint:
+Dispatch a Haiku subagent to list active Linear projects. This informs priority decisions throughout the cycle:
 
 - Issues in **in-progress projects** get a priority boost
 - Within the same priority level, prefer issues that unblock other work
 
-Keep project context in mind for the entire sprint, not just the first issue.
+Keep project context in mind for the entire cycle, not just the first issue.
 
 ### Step 3: Pull Next Issue
 
-Dispatch a Haiku subagent to get the highest-priority **Todo** issue, factoring in project context. If no Todo issues remain, the sprint is complete.
+Dispatch a Haiku subagent to get the highest-priority **Todo** issue, factoring in project context. If no Todo issues remain, the cycle is complete.
 
 ### Step 4: Spec Check
 
@@ -77,7 +77,7 @@ Before executing, verify the issue is fully spec'd. A fully spec'd issue has:
 
 **If incomplete:** Flag the issue and skip it:
 1. Add a `needs-spec` label (or equivalent) via Haiku subagent
-2. Add a comment: *"Flagged during sprint — missing [Background/Acceptance Criteria/specific criteria]. Needs brainstorming before implementation."*
+2. Add a comment: *"Flagged during cycle — missing [Background/Acceptance Criteria/specific criteria]. Needs brainstorming before implementation."*
 3. Move to **Backlog** status (it's not ready for Todo)
 4. Tell the user: *"ONE-42 is missing acceptance criteria — flagged for triage. Moving to next issue."*
 5. Pull the next issue (Step 3)
@@ -138,16 +138,16 @@ If any required element is missing, the issue is **not ready** and gets flagged.
 
 **Never:**
 - Execute an issue that's missing acceptance criteria
-- Block the sprint waiting for a spec — flag and skip
+- Block the cycle waiting for a spec — flag and skip
 - Combine multiple issues into one branch
-- Skip triage at the start of a sprint
+- Skip triage at the start of a cycle
 - Ignore project context when prioritizing
 
 ## Quick Reference
 
 | Action | Rule |
 |--------|------|
-| Start sprint | Clear triage first via linear-triage |
+| Start cycle | Clear triage first via linear-triage |
 | Pull order | Priority, then project context, then age |
 | Incomplete issue | Flag with `needs-spec`, move to Backlog, skip |
 | Large issue | Decompose via brainstorming, create sub-issues |

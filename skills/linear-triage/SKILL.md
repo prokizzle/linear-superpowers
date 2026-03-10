@@ -132,7 +132,7 @@ If the brainstormed spec reveals the issue is too large for a single branch/PR:
 ### Step 6: Set Status
 
 For right-sized issues:
-- Set to **Todo** — the issue is now ready to be pulled in a sprint
+- Set to **Todo** — the issue is now ready to be pulled in a cycle
 - Set to **Backlog** — if the user wants to defer it
 
 ### Step 7: Next Item
