@@ -11,7 +11,7 @@ Implement a single Linear issue in the current session. This is the non-subagent
 
 **Announce at start:** "I'm using the executing-plans skill to implement this Linear issue."
 
-**Note:** Tell your human partner that Superpowers works much better with access to subagents. If subagents are available, use superpowers:subagent-driven-development instead.
+**Note:** Tell your human partner that Superpowers works much better with access to subagents. If subagents are available, use linear-superpowers:subagent-driven-development instead.
 
 ## The Process
 
@@ -43,7 +43,7 @@ chore/ONE-44-upgrade-react
 
 Implement the issue:
 1. Follow acceptance criteria as the spec
-2. Use TDD (superpowers:test-driven-development)
+2. Use TDD (linear-superpowers:test-driven-development)
 3. Run verifications as you go
 4. Commit with issue ID: `[ONE-42] Add OAuth login flow`
 
@@ -53,13 +53,13 @@ Update the issue status to **Done** via Linear MCP.
 
 ### Step 6: Complete Development
 
-- **REQUIRED:** Use superpowers:finishing-a-development-branch
+- **REQUIRED:** Use linear-superpowers:finishing-a-development-branch
 - Follow that skill to verify tests, create PR
 - PR title: `[ONE-42] Issue title`
 
 ### After Completion
 
-Let the user know: *"Issue ONE-42 is done. Use superpowers:linear-cycle to continue working through issues, or superpowers:linear-cowork to pull a single issue."*
+Let the user know: *"Issue ONE-42 is done. Use linear-superpowers:linear-cycle to continue working through issues, or linear-superpowers:linear-cowork to pull a single issue."*
 
 ## Branch and PR Conventions
 
@@ -90,7 +90,7 @@ Let the user know: *"Issue ONE-42 is done. Use superpowers:linear-cycle to conti
 ## Integration
 
 **Required workflow skills:**
-- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **superpowers:linear-cowork** - Creates the Linear issues this skill implements
-- **superpowers:linear-cycle** - Orchestrates working through multiple issues in sequence
-- **superpowers:finishing-a-development-branch** - Complete development after implementation
+- **linear-superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **linear-superpowers:linear-cowork** - Creates the Linear issues this skill implements
+- **linear-superpowers:linear-cycle** - Orchestrates working through multiple issues in sequence
+- **linear-superpowers:finishing-a-development-branch** - Complete development after implementation

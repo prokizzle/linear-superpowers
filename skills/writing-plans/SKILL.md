@@ -49,7 +49,7 @@ This structure informs the task decomposition. Each task should produce self-con
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:linear-cowork to create Linear issues from this plan. Code execution happens from individual Linear issues, not directly from this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED: Use linear-superpowers:linear-cowork to create Linear issues from this plan. Code execution happens from individual Linear issues, not directly from this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -145,7 +145,7 @@ After saving the plan:
 
 **"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Creating Linear issues now."**
 
-**REQUIRED:** Use superpowers:linear-cowork to convert plan tasks into Linear issues.
+**REQUIRED:** Use linear-superpowers:linear-cowork to convert plan tasks into Linear issues.
 
 Linear is the source of truth. Plans ALWAYS flow through Linear before code is written:
 

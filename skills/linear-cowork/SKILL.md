@@ -8,8 +8,8 @@ description: "Use when converting an implementation plan into Linear issues and 
 Convert implementation plans into Linear projects and issues. This skill owns the issue-creation workflow and the shared conventions that all Linear skills follow.
 
 **Related skills:**
-- **superpowers:linear-cycle** — Loop through issues and execute them
-- **superpowers:linear-triage** — Process the triage queue via brainstorming
+- **linear-superpowers:linear-cycle** — Loop through issues and execute them
+- **linear-superpowers:linear-triage** — Process the triage queue via brainstorming
 
 ## MCP Setup
 
@@ -25,8 +25,8 @@ digraph when_to_use {
     "Process triage queue" [shape=box];
 
     "What do you need?" -> "Create issues from a plan" [label="have a plan"];
-    "What do you need?" -> "Work through issues" [label="superpowers:linear-cycle"];
-    "What do you need?" -> "Process triage queue" [label="superpowers:linear-triage"];
+    "What do you need?" -> "Work through issues" [label="linear-superpowers:linear-cycle"];
+    "What do you need?" -> "Process triage queue" [label="linear-superpowers:linear-triage"];
 }
 ```
 

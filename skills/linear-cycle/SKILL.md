@@ -52,7 +52,7 @@ digraph cycle {
 
 ### Step 1: Clear Triage First
 
-Dispatch a Haiku subagent to check the team's triage queue. If items exist, invoke **superpowers:linear-triage** to process them before starting the cycle. The cycle does not begin until triage is empty.
+Dispatch a Haiku subagent to check the team's triage queue. If items exist, invoke **linear-superpowers:linear-triage** to process them before starting the cycle. The cycle does not begin until triage is empty.
 
 ### Step 2: Review Active Projects
 
@@ -87,16 +87,16 @@ Before executing, verify the issue is fully spec'd. A fully spec'd issue has:
 Assess whether the issue is right-sized (single branch/PR, clear scope).
 
 **If too large:**
-1. Invoke **superpowers:brainstorming** to design the decomposition
-2. Create sub-issues in Linear via **superpowers:linear-cowork** (Part 2)
+1. Invoke **linear-superpowers:brainstorming** to design the decomposition
+2. Create sub-issues in Linear via **linear-superpowers:linear-cowork** (Part 2)
 3. Update the parent issue to reference sub-issues
 4. Pull the next issue (Step 3) — the sub-issues are now in the queue
 
 ### Step 6: Execute
 
 Hand off to:
-- **superpowers:subagent-driven-development** (if subagents available)
-- **superpowers:executing-plans** (if no subagents)
+- **linear-superpowers:subagent-driven-development** (if subagents available)
+- **linear-superpowers:executing-plans** (if no subagents)
 
 One issue = one branch = one PR.
 
