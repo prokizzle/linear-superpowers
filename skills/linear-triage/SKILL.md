@@ -81,7 +81,7 @@ For each triage item, present it to the user and ask for a decision:
 
 ### Step 3: Brainstorm into a Spec
 
-For accepted items, run a focused brainstorming session to produce a complete issue spec. This is a lightweight version of **superpowers:brainstorming** — not a full design process, but enough to produce:
+For accepted items, run a focused brainstorming session to produce a complete issue spec. This is a lightweight version of **linear-superpowers:brainstorming** — not a full design process, but enough to produce:
 
 1. **Title** with proper `[Type]` prefix
 2. **Background** — why this issue exists, what problem it solves
@@ -125,7 +125,7 @@ After user approves, use a Haiku subagent to:
 ### Step 5: Size Check
 
 If the brainstormed spec reveals the issue is too large for a single branch/PR:
-1. Use **superpowers:linear-cowork** (Part 2) to decompose into sub-issues
+1. Use **linear-superpowers:linear-cowork** (Part 2) to decompose into sub-issues
 2. Update the parent issue to reference the sub-issues
 3. Set the parent to an appropriate status
 

@@ -17,10 +17,10 @@ digraph when_to_use {
     "Subagents available?" [shape=diamond];
     "subagent-driven-development" [shape=box style=filled fillcolor=lightgreen];
     "executing-plans" [shape=box];
-    "Create issues first (superpowers:linear-cowork)" [shape=box];
+    "Create issues first (linear-superpowers:linear-cowork)" [shape=box];
 
     "Have a Linear issue to implement?" -> "Subagents available?" [label="yes"];
-    "Have a Linear issue to implement?" -> "Create issues first (superpowers:linear-cowork)" [label="no — need issues"];
+    "Have a Linear issue to implement?" -> "Create issues first (linear-superpowers:linear-cowork)" [label="no — need issues"];
     "Subagents available?" -> "subagent-driven-development" [label="yes"];
     "Subagents available?" -> "executing-plans" [label="no"];
 }
@@ -51,7 +51,7 @@ digraph process {
     }
 
     "Haiku: Update issue status to Done" [shape=box];
-    "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+    "Use linear-superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
     "Haiku: Read Linear issue (title, description, acceptance criteria)" -> "Update issue status to In Progress";
     "Update issue status to In Progress" -> "Create branch from issue ID (e.g. feat/ONE-42-add-oauth)";
@@ -69,7 +69,7 @@ digraph process {
     "Code quality reviewer approves?" -> "Implementer subagent fixes quality issues" [label="no"];
     "Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-review"];
     "Code quality reviewer approves?" -> "Haiku: Update issue status to Done" [label="yes"];
-    "Haiku: Update issue status to Done" -> "Use superpowers:finishing-a-development-branch";
+    "Haiku: Update issue status to Done" -> "Use linear-superpowers:finishing-a-development-branch";
 }
 ```
 
@@ -118,13 +118,13 @@ Use a Haiku subagent to update the issue status to **Done**.
 
 ### Step 7: Finish Branch
 
-Use superpowers:finishing-a-development-branch to create the PR.
+Use linear-superpowers:finishing-a-development-branch to create the PR.
 
 Include the issue ID in the PR title: `[ONE-42] Add OAuth login flow`
 
 ### After Completion
 
-Let the user know: *"Issue ONE-42 is done. Use superpowers:linear-cycle to continue working through issues, or superpowers:linear-cowork to pull a single issue."*
+Let the user know: *"Issue ONE-42 is done. Use linear-superpowers:linear-cycle to continue working through issues, or linear-superpowers:linear-cowork to pull a single issue."*
 
 ## Model Selection
 
@@ -185,14 +185,14 @@ Use the least powerful model that can handle each role:
 ## Integration
 
 **Required workflow skills:**
-- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **superpowers:linear-cowork** - Creates the Linear issues this skill implements
-- **superpowers:linear-cycle** - Orchestrates working through multiple issues in sequence
-- **superpowers:requesting-code-review** - Code review template for reviewer subagents
-- **superpowers:finishing-a-development-branch** - Complete development, create PR
+- **linear-superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **linear-superpowers:linear-cowork** - Creates the Linear issues this skill implements
+- **linear-superpowers:linear-cycle** - Orchestrates working through multiple issues in sequence
+- **linear-superpowers:requesting-code-review** - Code review template for reviewer subagents
+- **linear-superpowers:finishing-a-development-branch** - Complete development, create PR
 
 **Subagents should use:**
-- **superpowers:test-driven-development** - Subagents follow TDD for each task
+- **linear-superpowers:test-driven-development** - Subagents follow TDD for each task
 
 **Alternative workflow:**
-- **superpowers:executing-plans** - Use when subagents are not available
+- **linear-superpowers:executing-plans** - Use when subagents are not available
