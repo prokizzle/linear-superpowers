@@ -135,13 +135,16 @@ After saving the plan:
 
 **"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Ready to execute?"**
 
-**Execution path depends on harness capabilities:**
+**Ask the user which execution path to take:**
 
-**If harness has subagents (Claude Code, etc.):**
-- **REQUIRED:** Use superpowers:subagent-driven-development
-- Do NOT offer a choice - subagent-driven is the standard approach
-- Fresh subagent per task + two-stage review
+1. **Create Linear issues** (superpowers:linear-cowork)
+   - Converts plan tasks into a Linear project with tracked issues
+   - No code written — issues go to the team's backlog
+   - Use when: planning for a team, deferring execution, or tracking work in Linear
 
-**If harness does NOT have subagents:**
-- Execute plan in current session using superpowers:executing-plans
-- Batch execution with checkpoints for review
+2. **Execute as code** (subagent-driven or sequential)
+   - **If harness has subagents (Claude Code, etc.):** Use superpowers:subagent-driven-development
+     - Fresh subagent per task + two-stage review
+   - **If harness does NOT have subagents:** Use superpowers:executing-plans
+     - Batch execution with checkpoints for review
+   - Use when: implementing the plan immediately in this session
